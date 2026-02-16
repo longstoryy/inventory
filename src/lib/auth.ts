@@ -22,8 +22,8 @@ export const authOptions: NextAuthOptions = {
                         isActive: true,
                     },
                     include: {
-                        role: true,
-                        organization: {
+                        Role: true,
+                        Organization: {
                             select: {
                                 id: true,
                                 name: true,
@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 // Check organization is active
-                if (!user.organization.subscriptionStatus) {
+                if (!user.Organization.subscriptionStatus) {
                     throw new Error('Organization subscription is not active')
                 }
 
@@ -67,24 +67,24 @@ export const authOptions: NextAuthOptions = {
                     id: user.id,
                     email: user.email,
                     name: user.name,
-                    role: user.role.name,
-                    permissions: user.role.permissions as string[],
+                    role: user.Role.name,
+                    permissions: user.Role.permissions as string[],
                     defaultLocationId: user.defaultLocationId,
                     isOwner: user.isOwner,
                     organizationId: user.organizationId,
                     organization: {
-                        id: user.organization.id,
-                        name: user.organization.name,
-                        slug: user.organization.slug,
-                        subscriptionStatus: user.organization.subscriptionStatus,
-                        trialEndsAt: user.organization.trialEndsAt,
-                        subscriptionEndsAt: user.organization.subscriptionEndsAt,
-                        planName: user.organization.planName,
-                        maxLocations: user.organization.maxLocations,
-                        maxProducts: user.organization.maxProducts,
-                        maxUsers: user.organization.maxUsers,
-                        features: (user.organization.features as Record<string, boolean>) || {},
-                        currency: user.organization.currency,
+                        id: user.Organization.id,
+                        name: user.Organization.name,
+                        slug: user.Organization.slug,
+                        subscriptionStatus: user.Organization.subscriptionStatus,
+                        trialEndsAt: user.Organization.trialEndsAt,
+                        subscriptionEndsAt: user.Organization.subscriptionEndsAt,
+                        planName: user.Organization.planName,
+                        maxLocations: user.Organization.maxLocations,
+                        maxProducts: user.Organization.maxProducts,
+                        maxUsers: user.Organization.maxUsers,
+                        features: (user.Organization.features as Record<string, boolean>) || {},
+                        currency: user.Organization.currency,
                     },
                 }
             },

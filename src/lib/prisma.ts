@@ -3,31 +3,28 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined | null
+  prisma: PrismaClient | undefined
 }
 
-function createPrismaClient(): PrismaClient | null {
-  const connectionString = process.env.DATABASE_URL
-  if (!connectionString) {
-    console.warn('DATABASE_URL not set, skipping Prisma client initialization')
-    return null
-  }
+const connectionString = process.env.DATABASE_URL
 
+let prismaInstance: PrismaClient
+
+if (!connectionString) {
+  prismaInstance = new PrismaClient() // Fallback for types, though will fail at runtime
+} else {
   const pool = new Pool({ connectionString })
   const adapter = new PrismaPg(pool)
-  
-  return new PrismaClient({
+  prismaInstance = new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
 }
 
-const prismaBase = globalForPrisma.prisma ?? createPrismaClient()
-const prisma = prismaBase as PrismaClient
+export const prisma = globalForPrisma.prisma ?? prismaInstance
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prismaBase
+  globalForPrisma.prisma = prisma
 }
 
-export { prisma }
 export default prisma
