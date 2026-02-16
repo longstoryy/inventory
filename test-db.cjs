@@ -4,30 +4,26 @@ const { PrismaPg } = require('@prisma/adapter-pg')
 const { PrismaClient } = require('@prisma/client')
 
 async function main() {
-    console.log('DATABASE_URL starts with:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 15) : 'undefined')
-    
-    if (!process.env.DATABASE_URL) {
-        console.error('DATABASE_URL is not set in .env')
-        return
-    }
-
     const pool = new Pool({ connectionString: process.env.DATABASE_URL })
     const adapter = new PrismaPg(pool)
     const prisma = new PrismaClient({ adapter })
-    
-    console.log('Testing connection...')
+
     try {
-        await prisma.$connect()
-        console.log('Connection successful!')
-        const result = await prisma.$queryRawUnsafe('SELECT 1 as result')
-        console.log('Query successful:', result)
+        console.log('Checking Organization count...')
+        const orgCount = await prisma.organization.count()
+        console.log('Organizations:', orgCount)
+
+        console.log('Checking User count...')
+        const userCount = await prisma.user.count()
+        console.log('Users:', userCount)
         
-        // Let's also check if any tables exist
-        const tables = await prisma.$queryRawUnsafe("SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'")
-        console.log('Tables in public schema:', tables)
+        if (orgCount > 0) {
+            const orgs = await prisma.organization.findMany({ take: 1 })
+            console.log('Sample Org ID:', orgs[0].id)
+        }
         
     } catch (error) {
-        console.error('Connection failed:', error)
+        console.error('Check failed:', error)
     } finally {
         await prisma.$disconnect()
         await pool.end()

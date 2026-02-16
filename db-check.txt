@@ -1,0 +1,24 @@
+﻿[dotenv@17.3.1] injecting env (12) from .env -- tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' }
+Checking Organization count...
+node : Check failed: TypeError: Cannot read properties of undefined 
+(reading 'count')
+At line:1 char:1
++ node test-db.cjs 2>&1 | Out-File -FilePath db-check.txt -Encoding 
+utf ...
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Check failed: T...eading  
+   'count'):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    at main (C:\Users\LongStory GH\Desktop\inventory\test-db.cjs:13:52)
+    at Object.<anonymous> (C:\Users\LongStory 
+GH\Desktop\inventory\test-db.cjs:33:1)
+    at Module._compile (node:internal/modules/cjs/loader:1688:14)
+    at Object..js (node:internal/modules/cjs/loader:1820:10)
+    at Module.load (node:internal/modules/cjs/loader:1423:32)
+    at Function._load (node:internal/modules/cjs/loader:1246:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Function.executeUserEntryPoint [as runMain] 
+(node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49
