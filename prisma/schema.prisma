@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  type      String
+  message   String
+  urgent    Boolean  @default(false)
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Transfer {
+  id        String         @id @default(cuid())
+  date      DateTime       @default(now())
+  status    String         @default("PENDING") // PENDING, COMPLETED, CANCELLED
+  items     TransferItem[]
+  notes     String?
+  source    String?
+  destination String?
+}
+
+model TransferItem {
+  id         String   @id @default(cuid())
+  transferId String
+  transfer   Transfer @relation(fields: [transferId], references: [id])
+  name       String
+  quantity   Int
+  sku        String
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  name      String
+  quantity  Int      @default(0)
+  sku       String   @unique
+  price     Float?
+  costPrice Float?
+  sales     SaleItem[]
+}
+
+model Sale {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  status    String     @default("COMPLETED")
+  items     SaleItem[]
+  total     Float
+}
+
+model SaleItem {
+  id        String  @id @default(cuid())
+  saleId    String
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}

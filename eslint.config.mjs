@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // CommonJS config files
+    "tailwind.config.js",
+    "postcss.config.js",
+    "test-db.cjs",
+    "prisma/seed.ts",
   ]),
 ]);
 
